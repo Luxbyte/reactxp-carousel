@@ -1341,7 +1341,7 @@ export class Carousel extends Component {
 
         return (
             <AnimatedScrollView {...props}>
-              <View style={props.contentContainerStyle}>
+              <View style={[{flexDirection: props.style.flexDirection}, props.contentContainerStyle]}>
                 {
                     this._getCustomData().map((item, index) => {
                         return this._renderItem({ item, index });
