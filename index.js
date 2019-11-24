@@ -1,17 +1,12 @@
 'use strict';
 
-var { createStackNavigator } = require('./dist/navigators/createStackNavigator');
-var { createDrawerNavigator } = require('./dist/navigators/createDrawerNavigator');
-var { createBrowserApp } = require('@react-navigation/web');
-var { withNavigationFocus } = require('@react-navigation/core');
-var DrawerItems = require('./dist/views/DrawerItems');
-var RX = require('reactxp');
+var { Carousel } = require('./dist/carousel/Carousel');
+var { Pagination } = require('./dist/pagination/Pagination');
+//var ParallaxImage = require('./dist/parallaximage/ParallaxImage');
+var { getInputRangeFromIndexes } = require('./dist/utils/animations');
 
 module.exports = {
-  createStackNavigator,
-  createDrawerNavigator,
-  createAppContainer: createBrowserApp,
-  DrawerItems,
-  SafeAreaView: RX.View,
-  withNavigationFocus
+  Carousel,
+  Pagination,
+  getInputRangeFromIndexes
 };

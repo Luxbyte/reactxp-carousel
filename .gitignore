@@ -22,4 +22,3 @@ samples/CarouselTest/ios/Index
 samples/CarouselTest/ios/Pods
 *.xcuserdatad
 .gradle
-!/dist
