@@ -1,0 +1,23 @@
+{
+  "name": "reactxp-carousel",
+  "version": "0.0.1",
+  "description": "Carousel component for ReactXP supporting Web, Android and iOS",
+  "author": "Luxbyte <contact@luxbyte.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "react-native-snap-carousel": "^3.8.4"
+  },
+  "peerDependencies": {
+    "react-dom": "16.8.3",
+    "reactxp": "^1.6.1",
+    "react": "16.8.3",
+    "react-native": "^0.59.9"
+  },
+  "devDependencies": {
+    "@types/react-native": "^0.57.15",
+    "typescript": "^3.5.1"
+  }
+}
