@@ -48,12 +48,6 @@ export class Pagination extends React.PureComponent {
                 'You need to specify both `dotElement` and `inactiveDotElement`'
             );
         }
-        if (props.tappableDots && !props.carouselRef) {
-            console.warn(
-                'react-native-snap-carousel | Pagination: ' +
-                'You must specify prop `carouselRef` when setting `tappableDots` to `true`'
-            );
-        }
     }
 
     _needsRTLAdaptations () {

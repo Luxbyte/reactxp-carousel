@@ -2,15 +2,19 @@
  * This file demonstrates basic usage of the Carousel component
  */
 
-let React = require('react');
-let RX = require('reactxp');
+let React, RX;
+React = RX = require('reactxp');
 
 let { Carousel, Pagination } = require('reactxp-carousel');
 
 const _styles = {
   slide: RX.Styles.createViewStyle({
-    backgroundColor: "red",
-    height: 300
+    backgroundColor: "white",
+    height: 100,
+    textAlign: "center",
+    lineHeight: 100,
+    borderRadius: 10,
+    borderWidth: 1
   }),
   title: RX.Styles.createTextStyle({
     color: "black"
@@ -20,7 +24,7 @@ const _styles = {
     paddingVertical: 30
   }),
   exampleContainerDark: RX.Styles.createViewStyle({
-    backgroundColor: "#333"
+    backgroundColor: "#ddd"
   }),
   slider: RX.Styles.createViewStyle({
     marginTop: 15,
@@ -52,7 +56,7 @@ class App extends RX.Component {
   state = {
     index: 0
   }
-  carouselRef = React.createRef();
+  carouselRef = null;
 
   _renderItem ({item, index}) {
     return (
@@ -82,7 +86,7 @@ class App extends RX.Component {
       <RX.View style={[_styles.exampleContainer, _styles.exampleContainerDark]}>
         <Carousel
           data={entries}
-          ref={this.carouselRef}
+          ref={(ref) => {this.carouselRef = ref}}
           renderItem={this._renderItem}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
@@ -97,11 +101,11 @@ class App extends RX.Component {
         />
         <Pagination
           dotsLength={entries.length}
-          activeDotIndex={this.state.activeSlide}
+          activeDotIndex={this.state.activeSlide || 0}
           inactiveDotOpacity={0.4}
           inactiveDotScale={0.6}
           tappableDots={true}
-          carouselRef={this.carouselRef.current}
+          carouselRef={this.carouselRef}
         />
       </RX.View>
     );

@@ -1,5 +1,5 @@
 var React = require('react');
-import { Component, ScrollView, View, Animated, International } from 'reactxp';
+import { Component, ScrollView, View, GestureView, Animated, International } from 'reactxp';
 var PropTypes = require('prop-types');
 var shallowCompare = require('react-addons-shallow-compare');
 import {
@@ -116,6 +116,7 @@ export class Carousel extends Component {
 
         this._carouselRef = React.createRef();
         this._scrollTimeout = 0;
+        this._isPanning = false;
 
         this._mounted = false;
         this._positions = [];
@@ -143,7 +144,7 @@ export class Carousel extends Component {
 
         this._getKeyExtractor = this._getKeyExtractor.bind(this);
 
-        this._setScrollHandler(props);
+        this._scrollPos = Animated.createValue(0);
 
         // This bool aims at fixing an iOS bug due to scrollTo that triggers onMomentumScrollEnd.
         // onMomentumScrollEnd fires this._snapScroll, thus creating an infinite loop.
@@ -256,7 +257,7 @@ export class Carousel extends Component {
         }
 
         if (this.props.onScroll !== prevProps.onScroll) {
-          this._setScrollHandler(this.props);
+          this._scrollPos = Animated.createValue(0);
         }
     }
 
@@ -282,36 +283,6 @@ export class Carousel extends Component {
 
     get currentScrollPosition () {
         return this._currentContentOffset;
-    }
-
-    _setScrollHandler(props) {
-      // Native driver for scroll events
-      const scrollEventConfig = {
-        listener: this._onScroll,
-        useNativeDriver: true,
-      };
-      this._scrollPos = Animated.createValue(0);
-      /*const argMapping = props.vertical
-        ? [{ nativeEvent: { contentOffset: { y: this._scrollPos } } }]
-        : [{ nativeEvent: { contentOffset: { x: this._scrollPos } } }];
-
-      if (props.onScroll && Array.isArray(props.onScroll._argMapping)) {
-        // Because of a react-native issue https://github.com/facebook/react-native/issues/13294
-        argMapping.pop();
-        const [ argMap ] = props.onScroll._argMapping;
-        if (argMap && argMap.nativeEvent && argMap.nativeEvent.contentOffset) {
-          // Shares the same animated value passed in props
-          this._scrollPos =
-            argMap.nativeEvent.contentOffset.x ||
-            argMap.nativeEvent.contentOffset.y ||
-            this._scrollPos;
-        }
-        argMapping.push(...props.onScroll._argMapping);
-      }
-      this._onScrollHandler = Animated.event(
-        argMapping,
-        scrollEventConfig
-      );*/
     }
 
     _needsScrollView () {
@@ -801,9 +772,9 @@ export class Carousel extends Component {
             this._repositionScroll(nextActiveItem);
         }
 
-        /*if (typeof onScroll === "function" && event) {
+        if (typeof onScroll === "function" && event) {
             onScroll(event);
-        }*/
+        }
     }
 
     _onStartShouldSetResponderCapture (event) {
@@ -936,6 +907,10 @@ export class Carousel extends Component {
     }
 
     _snapScroll (delta) {
+        if (this._isPanning) {
+          // prevent snap while panning
+          return;
+        }
         const { swipeThreshold } = this.props;
 
         if (this._scrollStartActive !== this._scrollEndActive) {
@@ -1152,6 +1127,31 @@ export class Carousel extends Component {
         }
     }
 
+    _onPan(gestureState, gestureObj, self) {
+      if (gestureObj.isPanning == false) {
+        gestureObj.panScrollPos = gestureObj.scrollPos._value;
+      }
+      gestureObj.isPanning = true;
+      self._isPanning = true;
+
+      if (self.props.vertical) {
+        gestureObj.carouselRef.current.setScrollTop(gestureObj.panScrollPos - gestureState.clientY + gestureState.initialClientY, false);
+      } else {
+        gestureObj.carouselRef.current.setScrollLeft(gestureObj.panScrollPos - gestureState.clientX + gestureState.initialClientX, false);
+      }
+
+      if (gestureState.isComplete) {
+        gestureObj.isPanning = false;
+        self._isPanning = false;
+        if (self.props.vertical && Math.abs(gestureState.velocityY) < 0.25) {
+          self._snapScroll(gestureState.velocityY);
+        }
+        if (!self.props.vertical && Math.abs(gestureState.velocityX) < 0.25) {
+          self._snapScroll(gestureState.velocityX);
+        }
+      }
+    }
+
     _renderItem ({ item, index }) {
         const { interpolators } = this.state;
         const {
@@ -1191,9 +1191,18 @@ export class Carousel extends Component {
             key: keyExtractor ? keyExtractor(item, index) : this._getKeyExtractor(item, index)
         } : {};
 
+        const gestureObj = {
+           scrollPos: this._scrollPos,
+           isPanning: this._isPanning,
+           panScrollPos: 0,
+           carouselRef: this._carouselRef
+        }
+
         return (
             <Component style={[mainDimension, slideStyle, animatedStyle]} pointerEvents={'box-none'} {...specificProps}>
+              <GestureView onPan={(e) => this._onPan(e, gestureObj, this)}>
                 { renderItem({ item, index }, parallaxProps) }
+              </GestureView>
             </Component>
         );
     }
@@ -1312,15 +1321,18 @@ export class Carousel extends Component {
             ...this._getComponentStaticProps()
         };
 
+        let flexDirection;
         if (vertical) {
           props.scrollYAnimatedValue = this._scrollPos;
+          flexDirection = "column";
         } else {
           props.scrollXAnimatedValue = this._scrollPos;
+          flexDirection = this._needsRTLAdaptations() ? 'row-reverse' : 'row';
         }
 
         return (
             <AnimatedScrollView {...props}>
-              <View style={[{flexDirection: props.style.flexDirection}, props.contentContainerStyle]}>
+              <View style={[{flexDirection}, props.contentContainerStyle]}>
                 {
                     this._getCustomData().map((item, index) => {
                         return this._renderItem({ item, index });
