@@ -10,7 +10,7 @@ npm install --save reactxp-carousel
 
 ## Updates
 
-### Version 0.0.3
+### Version 0.0.2
 * Implemented web version
 
 ## Documentation
