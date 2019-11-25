@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
-import { International, Platform, View } from 'reactxp';
+import { International, View } from 'reactxp';
 var PropTypes = require('prop-types');
 import PaginationDot from './PaginationDot';
 import styles from './Pagination.style';
 
-const IS_IOS = Platform.getType() === 'ios';
 const IS_RTL = International.isRTL();
 
 export class Pagination extends PureComponent {
@@ -59,7 +58,7 @@ export class Pagination extends PureComponent {
 
     _needsRTLAdaptations () {
         const { vertical } = this.props;
-        return IS_RTL && !IS_IOS && !vertical;
+        return IS_RTL && !vertical;
     }
 
     get _activeDotIndex () {

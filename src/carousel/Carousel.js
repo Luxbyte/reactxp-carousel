@@ -1,5 +1,5 @@
 var React = require('react');
-import { Component, ScrollView, View, Animated, Platform, International } from 'reactxp';
+import { Component, ScrollView, View, Animated, International } from 'reactxp';
 var PropTypes = require('prop-types');
 var shallowCompare = require('react-addons-shallow-compare');
 import {
@@ -11,8 +11,6 @@ import {
     stackAnimatedStyles,
     tinderAnimatedStyles
 } from '../utils/animations';
-
-const IS_IOS = Platform.getType() === 'ios';
 
 // Native driver for scroll events
 // See: https://facebook.github.io/react-native/blog/2017/02/14/using-native-driver-for-animated.html
@@ -157,9 +155,6 @@ export class Carousel extends Component {
         }
         if (props.vertical && (!props.sliderHeight || !props.itemHeight)) {
             console.error('react-native-snap-carousel: You need to specify both `sliderHeight` and `itemHeight` for vertical carousels');
-        }
-        if (props.apparitionDelay && !IS_IOS && !props.useScrollView) {
-            console.warn('react-native-snap-carousel: Using `apparitionDelay` on Android is not recommended since it can lead to rendering issues');
         }
         if (props.customAnimationType || props.customAnimationOptions) {
             console.warn('react-native-snap-carousel: Props `customAnimationType` and `customAnimationOptions` have been renamed to `activeAnimationType` and `activeAnimationOptions`');
@@ -326,7 +321,7 @@ export class Carousel extends Component {
 
     _needsRTLAdaptations () {
         const { vertical } = this.props;
-        return IS_RTL && !IS_IOS && !vertical;
+        return IS_RTL && !vertical;
     }
 
     _canLockScroll () {
@@ -921,14 +916,7 @@ export class Carousel extends Component {
     // https://github.com/facebook/react-native/issues/6791
     // it's fine since we're only fixing an iOS bug in it, so ...
     _onTouchRelease (event) {
-        const { enableMomentum } = this.props;
-
-        if (enableMomentum && IS_IOS) {
-            clearTimeout(this._snapNoMomentumTimeout);
-            this._snapNoMomentumTimeout = setTimeout(() => {
-                this._snapToItem(this._activeItem);
-            }, 100);
-        }
+        return;
     }
 
     _onLayout (event) {
@@ -949,12 +937,6 @@ export class Carousel extends Component {
 
     _snapScroll (delta) {
         const { swipeThreshold } = this.props;
-
-        // When using momentum and releasing the touch with
-        // no velocity, scrollEndActive will be undefined (iOS)
-        if (!this._scrollEndActive && this._scrollEndActive !== 0 && IS_IOS) {
-            this._scrollEndActive = this._scrollStartActive;
-        }
 
         if (this._scrollStartActive !== this._scrollEndActive) {
             // Snap to the new active item
@@ -986,7 +968,6 @@ export class Carousel extends Component {
         const wrappedRef = this._getWrappedRef();
 
         if (!itemsLength || !wrappedRef) {
-          console.log("break1")
             return;
         }
 
@@ -1020,11 +1001,9 @@ export class Carousel extends Component {
         this._onScrollTriggered = false;
 
         if (!this._scrollOffsetRef && this._scrollOffsetRef !== 0) {
-          console.log("break2")
             return;
         }
 
-        console.log("scrollTo", this._scrollOffsetRef)
         this._scrollTo(this._scrollOffsetRef, animated);
 
         if (enableMomentum) {
@@ -1196,6 +1175,7 @@ export class Carousel extends Component {
         const animate = this._shouldAnimateSlides();
         const Component = animate ? Animated.View : View;
         const animatedStyle = animate ? this._getSlideInterpolatedStyle(index, animatedValue) : {};
+        console.log(animatedStyle)
 
         const parallaxProps = hasParallaxImages ? {
             scrollPosition: this._scrollPos,

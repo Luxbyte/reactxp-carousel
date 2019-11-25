@@ -71,7 +71,7 @@ class App extends RX.Component {
     const sliderWidth = width;
     const itemWidth = slideWidth + itemHorizontalMargin * 2;
 
-    const type = 'default';
+    const type = 'tinder';
 
     return (
       <RX.View style={[_styles.exampleContainer, _styles.exampleContainerDark]}>
@@ -83,7 +83,8 @@ class App extends RX.Component {
           containerCustomStyle={_styles.slider}
           contentContainerCustomStyle={_styles.sliderContentContainer}
           layout={type}
-          inactiveSlideScale={0.7}
+          inactiveSlideOpacity={0.1}
+          inactiveSlideScale={0.5}
           vertical={false}
           autoplay={false}
         />
