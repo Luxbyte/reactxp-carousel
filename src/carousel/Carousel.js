@@ -1175,7 +1175,6 @@ export class Carousel extends Component {
         const animate = this._shouldAnimateSlides();
         const Component = animate ? Animated.View : View;
         const animatedStyle = animate ? this._getSlideInterpolatedStyle(index, animatedValue) : {};
-        console.log(animatedStyle)
 
         const parallaxProps = hasParallaxImages ? {
             scrollPosition: this._scrollPos,

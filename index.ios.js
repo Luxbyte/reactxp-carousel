@@ -1,7 +1,9 @@
 'use strict';
 
-import Carousel from 'react-native-snap-carousel';
+import Carousel, { Pagination, getInputRangeFromIndexes } from 'react-native-snap-carousel';
 
 module.exports = {
-  Carousel
+  Carousel,
+  Pagination,
+  getInputRangeFromIndexes
 };

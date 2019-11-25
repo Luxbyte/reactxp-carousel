@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+let React = require('react');
 import { International, View } from 'reactxp';
 var PropTypes = require('prop-types');
 import PaginationDot from './PaginationDot';
@@ -6,7 +6,7 @@ import styles from './Pagination.style';
 
 const IS_RTL = International.isRTL();
 
-export class Pagination extends PureComponent {
+export class Pagination extends React.PureComponent {
 
     static propTypes = {
         activeDotIndex: PropTypes.number.isRequired,

@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
+let React = require('react');
 import { View, Animated } from 'reactxp';
 var PropTypes = require('prop-types');
 import styles from './Pagination.style';
 
-export default class PaginationDot extends PureComponent {
+export default class PaginationDot extends React.PureComponent {
 
     static propTypes = {
         inactiveOpacity: PropTypes.number.isRequired,
@@ -53,9 +53,8 @@ export default class PaginationDot extends PureComponent {
                 easing: Animated.Easing.linear,
                 ...commonProperties
             }),
-            Animated.spring(animTransform, {
-                friction: 4,
-                tension: 50,
+            Animated.timing(animTransform, {
+                easing: Animated.Easing.linear,
                 ...commonProperties
             })
         ];

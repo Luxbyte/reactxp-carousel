@@ -2,10 +2,10 @@
  * This file demonstrates basic usage of the Carousel component
  */
 
-let React, RX;
-React = RX = require('reactxp');
+let React = require('react');
+let RX = require('reactxp');
 
-let { Carousel } = require('reactxp-carousel');
+let { Carousel, Pagination } = require('reactxp-carousel');
 
 const _styles = {
   slide: RX.Styles.createViewStyle({
@@ -49,6 +49,11 @@ const entries = [
 
 class App extends RX.Component {
 
+  state = {
+    index: 0
+  }
+  carouselRef = React.createRef();
+
   _renderItem ({item, index}) {
     return (
       <RX.View style={_styles.slide}>
@@ -71,12 +76,13 @@ class App extends RX.Component {
     const sliderWidth = width;
     const itemWidth = slideWidth + itemHorizontalMargin * 2;
 
-    const type = 'tinder';
+    const type = 'default';
 
     return (
       <RX.View style={[_styles.exampleContainer, _styles.exampleContainerDark]}>
         <Carousel
           data={entries}
+          ref={this.carouselRef}
           renderItem={this._renderItem}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
@@ -86,7 +92,16 @@ class App extends RX.Component {
           inactiveSlideOpacity={0.1}
           inactiveSlideScale={0.5}
           vertical={false}
+          onSnapToItem={(index) => this.setState({ activeSlide: index })}
           autoplay={false}
+        />
+        <Pagination
+          dotsLength={entries.length}
+          activeDotIndex={this.state.activeSlide}
+          inactiveDotOpacity={0.4}
+          inactiveDotScale={0.6}
+          tappableDots={true}
+          carouselRef={this.carouselRef.current}
         />
       </RX.View>
     );
