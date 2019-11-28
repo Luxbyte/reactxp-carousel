@@ -980,6 +980,7 @@ export class Carousel extends Component {
         }
 
         this._scrollTo(this._scrollOffsetRef, animated);
+        this._onSnap(index);
 
         if (enableMomentum) {
             // iOS fix, check the note in the constructor
