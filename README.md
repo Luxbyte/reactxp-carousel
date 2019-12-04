@@ -10,6 +10,11 @@ npm install --save reactxp-carousel
 
 ## Updates
 
+### Version 0.1.0
+* Migrated react-native to version 0.61.5
+* Updated dependencies
+* Fixed Tinder-style animations on Web
+
 ### Version 0.0.3
 * Fixed start and end item in Pagination
 

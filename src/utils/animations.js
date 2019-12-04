@@ -205,36 +205,33 @@ export function tinderAnimatedStyles (index, animatedValue, carouselProps, cardO
           [0, 1, peekingCardsOpacity, peekingCardsOpacity, 0]
         ),
         transform: [{
-            scale: Animated.interpolate(animatedValue,
-              [0, 1, 2, 3],
-              [1, card1Scale, card2Scale, card3Scale]
-            )
-        }, {
-            rotate: Animated.interpolate(animatedValue,
-              [-1, 0],
-              ['-22deg', '0deg']
-            )
-        }, {
-            [mainTranslateProp]: Animated.interpolate(animatedValue,
-              [-1, 0, 1, 2, 3],
-              [
-                -sizeRef * 1.1,
-                0,
-                getMainTranslateFromScale(1, card1Scale),
-                getMainTranslateFromScale(2, card2Scale),
-                getMainTranslateFromScale(3, card3Scale)
-              ]
-            )
-        }, {
-            [secondaryTranslateProp]: Animated.interpolate(animatedValue,
-              [0, 1, 2, 3],
-              [
-                0,
-                getSecondaryTranslateFromScale(1, card1Scale),
-                getSecondaryTranslateFromScale(2, card2Scale),
-                getSecondaryTranslateFromScale(3, card3Scale)
-              ]
-            )
+          scale: Animated.interpolate(animatedValue,
+            [0, 1, 2, 3],
+            [1, card1Scale, card2Scale, card3Scale]
+          ),
+          rotate: Animated.interpolate(animatedValue,
+            [-1, 0],
+            [-22, 0]
+          ),
+          [mainTranslateProp]: Animated.interpolate(animatedValue,
+            [-1, 0, 1, 2, 3],
+            [
+              -sizeRef * 1.1,
+              0,
+              getMainTranslateFromScale(1, card1Scale),
+              getMainTranslateFromScale(2, card2Scale),
+              getMainTranslateFromScale(3, card3Scale)
+            ]
+          ),
+          [secondaryTranslateProp]: Animated.interpolate(animatedValue,
+            [0, 1, 2, 3],
+            [
+              0,
+              getSecondaryTranslateFromScale(1, card1Scale),
+              getSecondaryTranslateFromScale(2, card2Scale),
+              getSecondaryTranslateFromScale(3, card3Scale)
+            ]
+          )
         }]
     });
 }
