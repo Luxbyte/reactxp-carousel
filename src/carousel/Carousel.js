@@ -101,7 +101,6 @@ export class Carousel extends Component {
         super(props);
 
         this.state = {
-            hideCarousel: true,
             interpolators: []
         };
         this._scrollPos = Animated.createValue(0);
@@ -169,7 +168,6 @@ export class Carousel extends Component {
         const { apparitionDelay, autoplay, firstItem } = this.props;
         const _firstItem = this._getFirstItem(firstItem);
         const apparitionCallback = () => {
-            this.setState({ hideCarousel: false });
             if (autoplay) {
                 this.startAutoplay();
             }
@@ -1251,7 +1249,6 @@ export class Carousel extends Component {
     }
 
     _getComponentStaticProps () {
-        const { hideCarousel } = this.state;
         const {
             containerCustomStyle,
             contentContainerCustomStyle,
@@ -1264,7 +1261,6 @@ export class Carousel extends Component {
 
         const containerStyle = [
             containerCustomStyle || style || {},
-            hideCarousel ? { opacity: 0 } : {},
             vertical ?
                 { display: 'flex', height: sliderHeight, flexDirection: 'column' } :
                 // LTR hack; see https://github.com/facebook/react-native/issues/11960
