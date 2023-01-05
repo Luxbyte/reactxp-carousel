@@ -20,7 +20,7 @@
     "babel-loader": "^8.0.6",
     "metro-react-native-babel-preset": "^0.56.0",
     "typescript": "^3.5.1",
-    "webpack": "^3.10.0"
+    "webpack": "^5.75.0"
   },
   "dependencies": {
     "react": "16.9.0",
