@@ -1,6 +1,9 @@
 # reactxp-carousel [![npm version](https://img.shields.io/npm/v/reactxp-carousel.svg?style=flat)](https://www.npmjs.com/package/reactxp-carousel)
 Carousel component for [ReactXP](https://microsoft.github.io/reactxp/) supporting Web, Android and iOS
 
+**This repo is archived due to ReactXP having reached End of life  
+Please consider moving to ReactNative for web**
+
 Based on [react-native-snap-carousel](https://github.com/archriss/react-native-snap-carousel).
 
 ## Installation
